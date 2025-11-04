@@ -234,3 +234,29 @@ c.greet()
 # python only have private and public I suppose
 # lol you can bruteforce to use private methods or property in python
 # instead z.age, use z._MyClass__age
+
+
+import json
+jsonstring = '{"name": "Eric", "age": 18, "year" : 2015}'
+
+python_dict = json.loads(jsonstring)
+print(python_dict["name"])
+
+python_dict = {
+    "name" : "Bill",
+    "age" : 15,
+    "year" : 2020
+}
+jsonstring = json.dumps(python_dict)
+print(jsonstring)
+
+print(json.dumps(["banana", "apple"]))
+
+# use parameter indent to make it more readable
+print(json.dumps(python_dict, indent=4))
+# you can also use sort_keys=True to sort it based on key
+
+# pip freeze > requirements.txt
+# to create requirements.txt easily
+# to setup in new environment, you can just 
+# pip install -r requirements.txt

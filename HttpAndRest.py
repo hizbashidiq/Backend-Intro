@@ -56,4 +56,51 @@ else:
     # print(response.json())
     # print(response.text)
     # print(response.json)
-    
+
+
+# API -> a set of rules or protocols that enabled software applications to communicate with each other
+# i.e. exchange data, features, and functionality
+# type of API
+# Web API -> (majority of APIs)
+# data API/database API, operating system API, remote API used to define how applications on different device interact
+# type of Web API
+# Open API or public API -> anyone can access
+# partner API -> for partner business
+# internal API -> for specific organization
+# composite API -> combine multiple data or service, allow programmer to access several endpoints in single call
+# useful in microservice.
+# SaaS -> software as a service 
+
+# API Protocol
+# SOAP (Simple Object Access Protocol) -> a lightweight XML-based messaging protocol specification
+# RPC (Remote Procedure Call) -> protocol that provide high level communications paradigm used in OS
+# XML-RPC, JSON-RPC, gRPC, GraphQL
+# Websocket -> enable bidirectional communication between client and server. Once the connection established,
+# it allows for continous exchange make it great for real time communication
+
+
+
+# SOAP is more strict and secure and built into many development tools than REST.
+# While REST support more than XML such as plaintext, HTML, JSON, etc.
+
+# REST API is the base layer of web communication, so learn it and master it. 
+# After you master it, you can learn Websocket and GraphQL
+# REST API -> Representational State Transfer Application Programming Interface
+# tipically in JSON format
+
+# 6 REST design principles (architectural constraints)
+# 1. Unifrom Interface -> all API requests for the same resource should look the same regrardless of the client
+# 2. Client-Server Decoupling -> client and server should be completely independent. The only information client
+# so based on chatGPT, it's only mean that client doesn't care about how the server store or process data.
+# should know is URI (Uniform Resource Identifier). and client can't modify the server other than passing it to
+# the requested data via HTTP
+# 3. Stateless -> not storing any data from a session basically, so it need to be done in one process (?)
+# 4. Cacheability -> When possible, data should be cacheable to increase performance.
+# 5. Layered System Architecture -> calls and responses go through different layers. Do not assume client and server
+# connect directly.
+# 6. Code on Demand (Optional) -> usually send static data. but in certain cases, responses can also contain 
+# executable code, in this case the code should only run on demand
+
+# REST API Best Practice
+# 1. Using OpenAPI Specification (OAS)
+# 2. Securing through use hashing algorithms for password and HTTPS for secure data transmission

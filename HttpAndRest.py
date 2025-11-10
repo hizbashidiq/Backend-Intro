@@ -104,3 +104,26 @@ else:
 # REST API Best Practice
 # 1. Using OpenAPI Specification (OAS)
 # 2. Securing through use hashing algorithms for password and HTTPS for secure data transmission
+
+
+# curl command (Client URL Request Library)
+# https://curl.se/docs/tutorial.html
+# curl usually used for quick testing or debugging API
+
+
+# swagger -> API documentation framework
+# for documenting REST API
+# provides HTML view of the API documentation with JSON support and detailed infromation oh the HTTP methods
+
+# Best practice to learn how to interact with API is always by look at the API documentation
+
+# Postman -> testing and call API tools
+# query parameters: optional and required
+# query parameters can only be known by reading documentation since there's no rule to it
+# query parameters is lowercase sensitive
+# Path variables automatically replaced by Postman to it's value and so path variable name doesn't matter
+# not like query params
+# Most of post endpoint need some way of authentication (?)
+# important things in postman: console, random variable, send shortcut(ctrl+enter), 
+# postman isn't a tool for performance testing, security testing, 
+# when I do GET method, and send a data, I get an error, so they don't just ignore the data that been sent?

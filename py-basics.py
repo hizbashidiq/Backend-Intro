@@ -46,6 +46,7 @@ print(x)
 # ctrl+home : to the first line
 # ctrl+end : to the last line
 # ctrl+] : to indent a line
+# ctrl+h -> alt+ctrl+enter : replace all
 
 
 # File handling

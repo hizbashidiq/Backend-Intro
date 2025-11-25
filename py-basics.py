@@ -46,7 +46,10 @@ print(x)
 # ctrl+home : to the first line
 # ctrl+end : to the last line
 # ctrl+] : to indent a line
+# shift+tab : delete indent for highlighted lines
 # ctrl+h -> alt+ctrl+enter : replace all
+# ctrl+pgup : move to prev file
+# ctrl+pgdn : move to next file
 
 
 # File handling

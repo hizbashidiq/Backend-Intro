@@ -52,10 +52,22 @@
 package main
 // each project should have at least one package main. file with package main will executed first
 
-
-import "fmt" //I/O
+import "fmt"
+// import f "fmt" //I/O
+// f is an alias, so you can just write f.Println()
+// import "strings"
+import (
+	"math"
+	"strings"
+  . "golang-tutorial/library" // root folder is where go.mod is
+  // use . to let golang think that it's in the same level so you don't need to write library.Student, just Student
+  // but it's not recommended (?)
+  "reflect" //to inspect variable, metadata of variable: structure, tipe, value, pointer, etc
+  // also to modify unknown data type
+)
 
 // from "fmt" import Println, we can't do that
+
 // import "fmt/Println"
 
 // import f "fmt" -> alias
@@ -283,8 +295,320 @@ func main() {
 	fmt.Println(value)
 	fmt.Println(isExist)
 
+	array1 := []string{"John","Wick","The","Boogeyman"}
+	msg = "Hello"
+
+	printMessage(msg, array1)
+
+  fmt.Println(circle(15))
+  fmt.Println(average(1,2,3,4,5,6))
+
+  array2 := []int{1,2,3,4,5,6,7,8,9}
+  fmt.Println(average(array2...))
+
+  // closure function can carry state, and keep things private
+
+  // pointer
+
+
+  // & is used to referencing -> x = 5 -> &x = memory address
+  // * is used to dereferencing ->
+  var int1 int = 10
+  var string1 string = "hello"
+  fmt.Println(int1, string1)
+  fmt.Println(&int1, &string1)
+
+  var p_int1 *int = &int1
+  var p_string1 *string = &string1
+  fmt.Println(p_int1, p_string1)
+  fmt.Println(*p_int1, *p_string1)
+
+  // Go don't use Class, instead it use Struct
+
+  var student1 student
+  student1.name = "John"
+  student1.grade = 6
+
+  var student2 = student{}
+  var student3 = student{grade: 4, name: "Doe"}
+  fmt.Println(student1)
+  fmt.Println(student2)
+  fmt.Println(student3)
+
+  var s1 *student = &student1
+  fmt.Println(s1)
+  fmt.Println(*s1)
+  s1.name = "Wick"
+  fmt.Println(*s1)
+  fmt.Println(s1)
+  fmt.Println(&s1)
+  fmt.Println(student1)
+  fmt.Println(&student1)
+
+  // embedded struct, so you don't need to write s.person.age, only s.age as long as there's no name conflict
+  var s5 = students{}
+  s5.name = "wick"
+  s5.age = 21
+  s5.grade = 2
+
+  fmt.Println("name  :", s5.name)
+  fmt.Println("age   :", s5.age)
+  fmt.Println("age   :", s5.person.age)
+  fmt.Println("grade :", s5.grade)
+  // anonymous struct
+  var s6 = struct{
+    person
+    grade int
+  }{} // this is important to initiate zero value to the property
+  fmt.Println(s6)
+  var s7 = []struct{
+    person
+    grade int
+  }{}
+  fmt.Println(s7)
+
+  var s8 struct{
+    person
+    grade int
+  }
+  fmt.Println(s8)
+
+  // nested struct
+  type owner struct{
+    identification struct{
+      id int
+      name string
+    }
+    car_name string
+  }
+  var o1 owner
+  fmt.Println(o1)
+
+  // you can also do it horizontaly using ; to make a struct
+
+  // tag is important later on, usually used for json, database, and validation
+  s1.sayHello()
+
+  // you need to make method pointer if you want to change a property value (?)
+  // you only change the value inside of method otherwise
+
+  // in Go, 1 folder = 1 package
+  // first letter upper case -> exported/public
+  // first letter lower case -> unexported/private
+  // that's applicable to all (function, struct, method, property)
+
+  // library.SayHello("John")
+  // library.introduce("John")
+
+  // var s9 = library.student{"Ethan",21}
+  // var s9 = library.Student{"Ethan", 21}
+  // s9 := library.Student{"Ethan", 21}
+  s9 := Student{"Ethan", 21}
+  // var s9 library.student = {"Ethan", 21}
+
+  var s10 string = "hewo"
+
+  fmt.Println(s9, s10)
+
+  // since sayHola is in same package but different file, just add it in the command
+  // go run 1_golang_basic.go partial.go
+  // or better -> go run *.go
+  sayHola()
+  // since partial.go is the same package (main package) you can access private/unexported things
+
+  // you can use more than 1 init() in a file
+  // the order of init() execution are random between files
+  // but it'll be in order of import, so if it's same package it could be random (?)
+
+  var bangunDatar hitung
+  bangunDatar = persegi{10.0}
+  fmt.Println(bangunDatar.luas(), bangunDatar.keliling())
+
+  bangunDatar = lingkaran{14}
+  fmt.Println(bangunDatar.(lingkaran).jariJari()) // what is this?
+  // oh so this is casting bangunDatar to lingkaran first so you can use jariJari method
+  // not casting, it's type assertion and only works for interface
+  fmt.Println(bangunDatar.luas(), bangunDatar.keliling())
+
+  // var int2 = 20
+  // fmt.Println(int2)
+  // fmt.Println(int2.(float64))
+
+  // pointer dereference are slower than straight value in small and simple value (int, string, etc)
+  // if you don't want the function to change anything about parameter, use value instead of pointer (mutability)
+  // pointer can complicate concurrency
+
+  // so only use pointer if:
+  // 1. you need to modify the parameter value
+  // 2. the struct is large because it's cheaper to call/copy
+  // if you have a pointer method (usually so you can modify?) and a value method in a struct, you can access
+  // both using a pointer variable but can't access pointer method using value variable
+  // the most important rule of thumb is using pointer if you want to modify (?)
+
+  var secret interface{} //empty interface can be use for any datatype
+  secret = "hello"
+  fmt.Println(secret)
+  secret = 20
+  fmt.Println(secret)
+
+  // empty interface is a datatype btw, not an object
+  // any is alias of interface{}
+  // only in 1.18+ version btw
+  // var secret2 any
+  // secret2 = "test"
+  // fmt.Println(secret2)
+  // secret2 = 40
+  // fmt.Println(secret2)
+
+  fmt.Printf("%T\n", secret)
+  // var number2 = secret * 2 //since secret is an interface this is error, you need to type assertion first
+  var number2 = secret.(int)*2
+  fmt.Println(number2)
+
+  secret = []string {"apple", "banana", "cherry"}
+  // var f_fruits = strings.Join(secret, ", ") -> error, need to type assertion
+  var f_fruits = strings.Join(secret.([]string), ", ")
+  fmt.Println(secret)
+  fmt.Println(f_fruits)
+
+  // & -> get the address of this value, used when you want to create pointer
+  // * has two meanings
+  // 1. in variable declaration -> defines a pointer type (x *int)
+  // 2. when reading a value -> dereference, get the actual value stored at the pointer (*x = 100)
+
+  type person20 struct{
+    name string
+    age int
+  }
+  // var secret3 interface{} = &person{name: "Wood", age:24}
+  secret3 := interface{}(&person{name: "Wood", age:24})
+
+  fmt.Println(secret3)
+  // fmt.Println(*secret3) error because * can only be applied to a pointer value, but secret3 is an interface data type
+  fmt.Println(*secret3.(*person))
+  fmt.Printf("%p",*secret3.(*person))
+  // fmt.Printf("%p",&secret3.(*person))
+  fmt.Printf("%p\n", &secret3)
+
+  // p := s.(*person)
+  // fmt.Printf("%p\n", p)      // address stored in interface
+  // fmt.Printf("%p\n", &p)     // address of the pointer variable 'p'
+  // fmt.Printf("%p\n", &(*p))  // address of the underlying struct
+  // yeah I'm confused
+
+  // fmt.Println("%p", secret3)
+  // fmt.Println("%p", *secret3)
+  var name2 string = secret3.(*person).name
+  fmt.Println(name2)
+
+  // reflect.ValueOf -> return reflect.Value
+  // reflect.TypeOf -> return reflect.Type
+  // usually used to work with unknown data types at run time
+  // so it should be together with interface{} since it can be any type
+  // also to work with framework-level code so it can receive any data type
+  var number3 = 3
+  reflectVal := reflect.ValueOf(number3)
+  fmt.Println(reflectVal.Type())
+
+  if reflectVal.Kind() == reflect.Int{
+    fmt.Println(reflectVal.Int())
+  }
+  // Kind() broad type i.e. int, string, slice
+  // always return most outer like []map[int]string gonna omit slice i.e.[]
+  // to go inner you'll use .Elem().Kind()-> map, Key().Kind()->int Elem().Kind() -> string
+  // Type() full information i.e. map[string]int, main.Person
+  // ValueOf() : normal -> reflect.Value
+  // Interface() : reflect.Value -> normal
+  // reflect can access information of all kind of things (variable, method, struct) but it needs to be public/exported
+  
+}
+// interface is a data type
+// you need all method in an interface to be able to declared as said interface
+// but you can have other method outside of the interface
+// for example, in hitung you have luas and keliling and lingkaran you have both + jarijari
+// it's still valid to lingkaran be that interface data type
+// but if you have only luas, you can't be assign to hitung interface variable
+// you can embed interface to another interface, like if you create hitung3d, you can have a member of hitung
+type hitung interface{
+    luas() float64
+    keliling() float64
+}
+
+type lingkaran struct{
+    diameter float64
+}
+func (l lingkaran) jariJari() float64{
+    return l.diameter/2
+}
+func (l lingkaran) luas() float64{
+    return math.Pi*math.Pow(l.jariJari(),2)
+}
+func (l lingkaran) keliling() float64{
+    return math.Pi*l.diameter
+}
+
+type persegi struct{
+    sisi float64
+}
+func (p persegi) luas() float64{
+    return math.Pow(p.sisi,2)
+}
+func (p persegi) keliling() float64{
+    return p.sisi*4
+}
+
+type student struct{
+  name string
+  grade int
+}
+
+func (s student) sayHello(){
+  fmt.Printf("Hello, my name is %s. I'm %d grade.", s.name, s.grade)
+}
+
+type person struct {
+  name string
+  age  int
+}
+
+type students struct {
+  grade int
+  person
 }
 
 /*
 	multi line comment
 */
+func printMessage(msg string, arr []string){
+	// for i:= range arr{
+	// 	msg = fmt.Sprintf("%s %s",msg, arr[i])
+	// 	fmt.Println(arr[i])
+	// }
+	var nameString = strings.Join(arr, " ")
+	fmt.Println(msg, nameString)
+}
+
+// func calculate(d float64) (float64, float64){
+func circle(d float64) (area float64, circumference float64){
+  // area := math.Pi * math.Pow(d/2,2)
+  // circumference := math.Pi * d
+  // return area, circumference
+  area = math.Pi * math.Pow(d/2,2)
+  circumference = math.Pi * d
+  return
+}
+
+// variadic function
+func average(numbers ...int)(avg float64){
+  var total int
+  for i:=range numbers{
+    total += numbers[i]
+    // fmt.Println(total)
+  }
+  // fmt.Println(len(numbers))
+  // int/int -> return int in Golang
+  avg = float64(total)/float64(len(numbers))
+
+  return
+}
+

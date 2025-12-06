@@ -1,0 +1,16 @@
+{{define "index"}} <!--this is template name until end-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <title>{{.title}}</title> -->
+    {{template "_header"}}
+    <link rel="stylesheet" href="/static/site.css"> <!--best practice to put link stylesheet in head section-->
+  </head>
+  <body>
+    {{template "_message"}}
+    <p>Welcome {{.name}}!</p>
+    <p>Page: Index</p>
+  </body>
+</html>
+{{end}}
+

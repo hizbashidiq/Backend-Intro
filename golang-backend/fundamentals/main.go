@@ -3,7 +3,6 @@ package main
 // CLI
 // GIT
 
-
 // COMPUTATIONAL THINKING -> a way of thinking logically and solving problems in an organized manner
 
 // 4 cornerstones
@@ -18,11 +17,13 @@ package main
 // byte is the alias for uint8
 // rune is the alias for int32
 
-import(
-  "fmt"
-  // "math"
-  // "strings"
-  // "sort"
+import (
+	"fmt"
+	"sync"
+	// "math"
+	// "strings"
+	// "sort"
+	"errors"
 )
 
 func main(){
@@ -382,6 +383,181 @@ func main(){
   // Ex: strconv, suffixarray,
   // It's better to create one package per directory except _test
   // module path format tipically <domain>/<project-description>
+
+  // direct dependency imported directly in your code using import keyword
+  // indirect dependency is required but you don't import it in your code, usually one of your direct dependency
+  // has this module as requirement
+  // to see the hierarcy of indirect dependencies on why they needed write this command
+  // go mod why <indirect-dependecies>
+
+  // go get example.com/module@v1.0.0 -> specific version
+  // go get example.com/module@latest -> latest version
+
+  // go list -m -u all -> check update of go module listed in go.mod
+  // go mod tidy -> ensure go.mod file matches module used in your project. add missing modules and remove unused modules
+
+  // error type in Go is implemented as
+  // type Error interface {
+    // Error() string
+  // }
+
+  // error usually returned as the last argument of a function/method
+
+  a,b := 10,0
+  r, err := divide(a,b)
+  if err!=nil{
+    switch{
+    case errors.Is(err, ErrDivideByZero):
+      fmt.Println("divide by zero error")
+    default:
+      fmt.Printf("unexpected error : %s\n", err)
+    }
+  }
+  fmt.Println(r)
+
+  // Wrapping error are mainly to make debugging easier(?), also can use errors.Is and errors.As
+  // sometimes you don't need to wrapping an error since it's can lower security and privacy
+
+  // error message shouldn't capitalized
+  // errors.New variable should have format of errFoo or ErrFoo
+
+  // unit test ideally should constitute bulk of tests
+  // integration -> how piece of code functions when interact with other codes. these tests communicate with
+  // external dependencies like database or external API
+
+  // Given-When-Then is a part of Behavior-Driven Development(BDD)
+  // FIRST (Fast, Isolated, Repeatable, Self-Validating, Timely)
+  // bad unit test: manual assertion, multiple assertion, redundant assertion, coupling test (one unit test,
+  // dependant on another unit test), will failing test, login in test (avoid any logic in test, since every logic
+  // need it's own test, logic as if-else etc)
+  // generally, avoid testing IO (e.g. files, database, network, request), Time, and Random number
+
+  // OOP Concept
+  // Golang doesn't have inheritance, instead it's using composition. Child can use parents method directly
+  c1 := Marvel{
+    Comic{
+      "MCU",
+    },
+  }
+
+  c2 := DC{
+    Comic{
+      "DC",
+    },
+  }
+
+  fmt.Println(c1.ComicUniverse())
+  fmt.Println(c2.ComicUniverse())
+
+  // A child can have multiple parents btw
+
+  // SOLID-> Single Responsibility principle(SRP), Open-Closed Principle(OCP), Liskov Subtitution Principle(LSP),
+  // Interface Segregation Principle(ISP), Dependency Inversion Principle(DIP)
+
+  // abstraction in Golang also implemented using interface
+  // duck typing vs structural typing
+  // duck typing (runtime) focus on what an object can do (used in Python, Ruby, JS)
+  // structural typing (compile-time) focus on the structure (used in Go, Rust, TypeScript)
+  // wait, Go use static typing with interface satisfaction (? what is this)
+
+  // Oh so there's 2 typing: static and dynamic. duck is dynamic. Structural and nominal are static.
+
+  // Go use static typing with interface satisfaction means if a type implements all method of an interface,
+  // that type is satisfy that interface
+  // example type A interface{x() y()}, type U struct{}, func U x(), func U y(), var a A := U{} -> valid
+
+  // test double in golang
+
+  // concurrency vs parallelism
+
+  // Goroutine -> can be tricky to test or predict it's behavior
+  // goroutine give you concurrency by design, and parallelism when possible
+
+  i = 0
+  printHitung := func(done chan bool){
+    i++
+    fmt.Print(i)
+    done<-true
+  }
+
+  done := make(chan bool)
+
+  for i:=65;i<75;i++{
+    fmt.Print(string(rune(i)))
+    go printHitung(done)
+    <-done // wait until done receive true (done<-true)
+  }
+
+  // data race -> 2 goroutines, access same variable, at least one write, no synchronization
+
+  // race condition -> mutex,
+
+  var wg sync.WaitGroup
+  wg.Add(2)
+
+  go func(){
+    // for range 100000{
+    for i:=0; i<100000; i++{
+      increment()
+    }
+    wg.Done()
+  }()
+
+  go func(){
+    for i:=0; i<100000; i++{
+      increment()
+    }
+    wg.Done()
+  }()
+
+  wg.Wait()
+  fmt.Println("Counter with mutex: ",coun)
+
+  // wg.add() tells how much goroutine we use. wg.Done basically decrement wg.add()--,
+  // wg.Wait only continue when wg.Add = 0
+
+  // fmt is safe for concurrent use but doesn't guarantee atomic or ordered output
+
+  // best practice to always do close(channel)
+  // and do it in the same scope when it's initialize(?)
+}
+
+var coun int
+var mutex sync.Mutex
+func increment(){
+  mutex.Lock()
+  defer mutex.Unlock()
+  coun++
+}
+type Comic struct{
+  Universe string
+}
+
+func (c Comic) ComicUniverse() string{
+  return c.Universe
+}
+
+type Marvel struct{
+  Comic
+}
+type DC struct{
+  Comic
+}
+
+// you can define expected error
+var ErrDivideByZero = errors.New("divide by zero")
+
+func divide(a, b int) (int, error){
+  if b==0{
+    return 0, ErrDivideByZero
+  }
+  return a/b, nil
+}
+
+func DoSomething() error{
+  return errors.New("create new error with static error message")
+  // you can even use fmt.Errorf to add dynamic data type like int with %d etc
+  // there's %w that wrap errorr within error, let's learn that one day
 }
 
 // type Products struct{

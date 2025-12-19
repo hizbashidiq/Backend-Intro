@@ -371,6 +371,17 @@ func main(){
   // Classification of Data Structure
   // Linear Data Structure:
   // Non-Lin
+
+
+
+
+
+
+  // Go Fundamentals
+  // best practice to package names: short, lowercase, single-word. avoid underscores or mixedCaps
+  // Ex: strconv, suffixarray,
+  // It's better to create one package per directory except _test
+  // module path format tipically <domain>/<project-description>
 }
 
 // type Products struct{

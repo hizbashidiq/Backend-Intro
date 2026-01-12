@@ -158,6 +158,101 @@ func main(){
 
   // syntatic validation should enforce correct syntax of structured fields (e.g. date, currency symbol)
   // semantic validation should enforce correct value regarding business context (e.g. start date before end date)
+
+  // middleware usually used for logging, authentication/authorization, error handling, CORS, request throttling
+
+  // if used properly, AES is effectively unbreakable in practice
+  // when AES get hacked it never the AES, it mostly the human error; hardcodded key, keys committed to git,
+  // business and product constraint, etc
+  // security is often a negotiated compromise
+
+  // most used cryptographic algorithm
+  // SHA-256/SHA-512 -> data integrity, hashing non-password data
+  // bcrypt/scrypt/Argon2 -> password hashing
+  // AES-GCM -> encrypt database field
+  // HMAC (usually HMAC-SHA256) -> message authentication
+  // RSA, ECDSA, Ed25519 -> digital signatures (JWT, OAuth, auth systems)
+
+  // AES, bcrypt/Argon2, HMAC, and TLS account for more than 90% of real world cryptography usage
+
+  // encryption two way, hashing one way that's why hashing mostly used for password
+  // you must select which one to use that suitable for your specific case
+
+  // Authentication ->process of proving that some facts or documents are genuine
+  // Authorization ->process of giving someone the ability to access a resource
+
+  // JWT -> JSON Web Token
+  // JWT part : header.payload.signature
+  // header contains algorithm that used to sign the token, and it specifies type of token (in this case JWT)
+  // payload carries the claim which are statements about the entity and additional data
+  // 3 types of claim:
+  // Registered claims
+  // Public claims
+  // Private claims
+  // signature includes the result of a function that involves header, payload, and secret key (symmetric) or public
+  // key and private key (asymm) used to sign the token. It's used to verify that the content of the token hasn't
+  // been tampered
+
+  // two parts of authentication using JWT with symmetric signing algorithm
+  // signing a token, verifying a token
+
+  // OAuth 2.0
+  // 4 roles
+  // The third-party application (app that require to access user information)
+  // The resource server (API we want to access)
+  // The Authorization server (might be the same server with resource server and might be different)
+  // The resource owner (user)
+
+  // different scenario will have different OAuth2.0 flow
+
+  // ID token, access token, refresh token
+
+  // Authenticator app is not OAuth 2.0.
+  // refresh tokens can be refreshed indefinitely
+  // refresh token must be stateful on the server so server can act on it depend on it's state
+
+  // in go, string and []byte basically the same (slices of bytes) except the mutability. strings are read only
+
+  // Authentication Factors
+  // Something you know e.g. password, PIN
+  // Something you have e.g. smartphone
+  // Something you are e.g. biometric authentication
+  // 2FA : something you know + something you have
+
+  // IAM (Identity and Access Management)
+
+  // jwt payload/claims are basically up to dev. exp is mandatory in practice. sub is strongly recommended
+
+
+  // Clean architecture aim to separate software into layers
+  // Dependency Rule : Dependency can only point inward. Nothing in inner circle can know anything about
+  // outer circle. e.g. a var, functions, class name in outer circle must not be mentioned in inner circle.
+  // Inner to Outer
+  // 1. Model/Entity Layer (business rule): core business concepts, no framework, pure go construct and method
+  // 2. Repository Layer
+  // 3. Service/Usecase Layer (application rules): what the system does, define interface
+  // 4. Handler/Controller Layer
+
+  // repository: how do I get/save data? (DB handler essentially)
+  // use case: what does the app do? (business logic)
+
+  // interface in go: to decouple behavior from implementation when change is expected
+
+  // Documentation purpose
+  // 1. Reference and functionality
+  // 2. Guides and tutorials
+  // 3. Examples and use case
+
+  // Stripe's API doc pretty much standard (?)
+
+  // graceful shutdown in go http server:
+  // listen to incoming OS signal such as SIGTERM and SIGINT
+  // call .shutdown() to our HTTP server
+
+  // if there's no in-flight request, the server will shutdown immediately
+  // if there's in-flight request, the server will wait until that request is completed
+  // if there's new request after initiate graceful shutdown, the new request will not be served
+  // 
 }
 
 
